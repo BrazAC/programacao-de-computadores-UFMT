@@ -12,7 +12,7 @@ Suponha que o usuário entre com o número correto de dígitos.
 Dica: Use as operações de divisão inteira e módulo para separar os dígitos.
 """
 
-#Algoritmo semi-inutil
+#Algoritmo semi-inutil (faz a mesma coisa que o final, só que da direita pra esquerda do número)
 '''
 1 - Obter o numero de cinco digitos, guardar em val  
 
@@ -35,7 +35,7 @@ Repetir de 2 -> 7
     1.1 - Obter o contador, cont = quantDigito - 1)
     1.2 - Criar string vazia
 Repetir 2 -> 5 enquanto val > 0:
-1 - Guardar em valQuebrado = (val // 10 ** cont) Obs:Uso // para armazenar valor int 
+1 - Guardar em valQuebrado = (val // 10 ** cont) Obs:Uso // para armazenar valor como int e nao float
 2 - Obter algAtual = valQuebrado - (valQuebrado % 1)
 3 - Atualizo val = val - (algAtual * 10 ** cont) 
 4 - Atualizar cont = cont - 1
