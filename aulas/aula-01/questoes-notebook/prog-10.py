@@ -2,7 +2,7 @@
 UFMT - Bacharelado em Ciencia da Computacao
 Programacao de computadores
 Prof. Ivairton
-17/08/2024
+18/08/2024
 
 Programa:
 Escreva um script que solicite três números de ponto flutuante diferentes para o usuário. 
