@@ -31,10 +31,10 @@ Repetir de 2 -> 7
 #Algoritmo Final
 #Esse algoritmo exige saber a quantidade de digitos do numero
 '''
-1 - Obter o numero de cinco digitos, guardar em val 
+0 - Obter o numero de cinco digitos, guardar em val 
     1.1 - Obter o contador, cont = quantDigito - 1)
     1.2 - Criar string vazia
-Repetir 2 -> 5 enquanto val > 0:
+Repetir 1 -> 5 enquanto val > 0:
 1 - Guardar em valQuebrado = (val // 10 ** cont) Obs:Uso // para armazenar valor como int e nao float
 2 - Obter algAtual = valQuebrado - (valQuebrado % 1)
 3 - Atualizo val = val - (algAtual * 10 ** cont) 
