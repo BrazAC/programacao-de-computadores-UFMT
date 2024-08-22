@@ -53,7 +53,7 @@ def imprimeDiagInferior(matriz, grandeza):
             while col >= 0:
                 print(matriz[lin][col])
                 col -= 1
-
+#gabriel bixa loka
 def main():
     
     #Criando matriz
