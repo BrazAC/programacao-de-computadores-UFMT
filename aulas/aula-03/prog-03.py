@@ -42,18 +42,17 @@ def imprimeDiagSuperior(matriz, grandeza):
     print("-> Imprimindo diagonal superior")
     for lin in range(grandeza):
         for col in range(lin + 1, grandeza):
-            print(matriz[lin][col])
+            print(matriz[lin][col], end = " ")
+        print()
         
 def imprimeDiagInferior(matriz, grandeza):
     print("-> Imprimindo diagonal inferior")
     for lin in range(1, grandeza):
-        #contador da coluna comeca em lin - 1 e descresce até ser igual a 0
+        #contador da coluna comeca em 0 e vai ate lin - 1
         for col in range(lin):
-            col = lin - 1
-            while col >= 0:
-                print(matriz[lin][col])
-                col -= 1
-#gabriel bixa loka
+            print(matriz[lin][col], end=" ")
+        print()
+
 def main():
     
     #Criando matriz
@@ -62,13 +61,13 @@ def main():
     
 
     #Imprimindo matriz por colunas
-    #imprimePorColuna(mtz, grandeza)
+    imprimePorColuna(mtz, grandeza)
 
     #Imprimindo a diagonal principal
-    #imprimeDiagPrincipal(mtz, grandeza)
+    imprimeDiagPrincipal(mtz, grandeza)
     
     #Imprimindo diagonal superior
-    #imprimeDiagSuperior(mtz, grandeza)
+    imprimeDiagSuperior(mtz, grandeza)
 
     #Imprimindo diagonal inferior
     imprimeDiagInferior(mtz,grandeza)
