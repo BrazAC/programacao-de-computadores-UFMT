@@ -2,7 +2,7 @@
 UFMT - Bacharelado em Ciencia da Computacao
 Programacao de computadores
 Prof. Ivairton
-21/08/2024
+22/08/2024
 
 Programa:
 Para verificar a eficiência de seu automóvel, todas as vezes que enche o tanque, um motorista 
