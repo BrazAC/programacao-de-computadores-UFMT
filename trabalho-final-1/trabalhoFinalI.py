@@ -34,7 +34,7 @@ registersDes_df = registers_df.describe()
 sns.set_theme()
 
 #Plot the desired data 
-sns.relplot(data=registers_df, x="Latitude", y="Longitude")
+sns.relplot(data=registers_df, x="Longitude", y="Latitude")
 
 #Show the graphic
 #plt.pyplot.show()
@@ -86,8 +86,8 @@ IQR = Q3 - Q1
 operations = ['Média', 'Mediana', 'Variância', 'Desvio padrão']
 info_df = pd.DataFrame(infoVector, columns = atributeNames0_6, index = operations)
 
-"""#Mostrando tabelas/Dados que não puderam entrar em infoVector
-print("\nModas:\n", moda)
+#Mostrando tabelas/Dados que não puderam entrar em infoVector
+"""print("Modas:\n", moda)
 print("\nQuantis:\n", quantis_df)
 print("\nIntervalo interquartil =", IQR)
 
@@ -96,7 +96,14 @@ print("\nOther info:")
 print(info_df)"""
 
 #------------------------------------------------------------FOURTH REQUIREMENT
-#Plot the desired data
-for i in range(len(atributeNames)):
-    sns.boxplot(data=registers_df[atributeNames[i]], orient="h")
+"""#Plot the bloxPot
+for i in range(len(atributeNames0_6)):
+    sns.boxplot(data=registers_df[atributeNames0_6[i]], orient="h")
     plt.pyplot.show()
+
+#Plot the histograma
+for i in range(len(atributeNames0_6)):
+    sns.histplot(data=registers_df[atributeNames0_6[i]], kde=True) 
+    plt.pyplot.show()"""
+
+#------------------------------------------------------------FIFTH REQUIREMENT
