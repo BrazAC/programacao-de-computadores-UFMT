@@ -11,7 +11,7 @@ consistindo em IDs de alunos, nomes e notas/conceitos indicados por letras:
 """
 
 #Instanciando um objeto do tipo file no modo write e guardando em notas
-notas = open('./notas.txt', mode='w')
+notas = open('./notas2.txt', mode='w')
 
 #Chamando o servico de manipulacao de arquivo do SO
 #O with ira fechar o servico solicitado ao final da execucao do bloco interno
@@ -23,7 +23,7 @@ with notas:
 
 
 #Instanciando um objeto do tipo file no modo read e atualizando notas
-notas = open('./notas.txt', mode='r')
+notas = open('/home/braz/repos/programacao-de-computadores-UFMT/aulas/aula-files-04/questoes-notebook/notas2.txt', mode='r')
 
 #Chamando o servico de manipulacao de arquivo do SO
 with notas:
