@@ -5,9 +5,8 @@ Professor: Ivairton
 Discipline: Introducao a programacao
 Project: Trabalho final I
 
-OBSERVAÇÃO: As linhas de código que mostram as informações estão comentadas e identificadas com: "<======== HERE"
+ATENÇÃO: As linhas de código que mostram as informações no terminal estão comentadas e identificadas com: "<======== HERE"
 """
-import numpy as np
 import pandas as pd
 from sklearn.datasets import fetch_california_housing
 import seaborn as sns
@@ -39,7 +38,7 @@ sns.set_theme()
 sns.relplot(data=registers_df, x="Longitude", y="Latitude")
 
 #Show the graphic
-#plt.pyplot.show() <======== HERE
+#plt.pyplot.show()<======== HERE
 
 #------------------------------------------------------------THIRD REQUIREMENT
 #Getting the target atribute names
@@ -117,3 +116,32 @@ for i in range(len(atributeNames0_6)):
 """
 
 #------------------------------------------------------------FIFTH REQUIREMENT
+#----->First Pair
+#AveBedrms Skewness
+AveBedrmsSkew = registers_df['AveBedrms'].skew()
+#AveBedrms Kurtosis
+AveBedrmsKurt = registers_df['AveBedrms'].kurtosis()
+
+#AveRooms Skewness
+AveRoomsSkew = registers_df['AveRooms'].skew()
+#AveRooms Kurtosis
+AveRoomsKurt = registers_df['AveRooms'].kurtosis()
+
+#Creating and showing the data with a dataFrame
+firstPairSkew_Df = pd.DataFrame([[AveBedrmsSkew, AveRoomsSkew], [AveBedrmsKurt, AveRoomsKurt]], ["Skewness", "Kurtosis"], ['AveBedrms', 'AveRooms'])
+#print(firstPairSkew_Df, "\n")  <======== HERE
+
+#----->Second Pair
+#Population Skewness
+PopulationSkew = registers_df['Population'].skew()
+#Population Kurtosis
+PopulationKurt = registers_df['Population'].kurtosis()
+
+#HouseAge Skewness
+HouseAgeSkew = registers_df['HouseAge'].skew()
+#HouseAge Skewness
+HouseAgeKurt = registers_df['HouseAge'].kurtosis()
+
+#Creating and showing the data with a dataFrame
+secondtPairSkew_Df = pd.DataFrame([[PopulationSkew, HouseAgeSkew], [PopulationKurt, HouseAgeKurt]], ["Skewness", "Kurtosis"], ['Population', 'HouseAge'])
+#print(secondtPairSkew_Df)  <======== HERE

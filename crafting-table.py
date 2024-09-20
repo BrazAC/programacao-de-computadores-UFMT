@@ -1,33 +1,37 @@
-import random
+"""
+Escreva	um	algoritmo	que	conte	de	1	até	10	e	armazene	esta	contagem	num	vetor	de	inteiros.	Mas	os	valores	devem ser	
+armazenados	de	tal	forma	que	o	primeiro	valor	(1)	seja	posto	na	primeira	posiçã o	do	vetor,	o	
+segundo	valor	(2)	seja	posto	na	ú ltima,	e	dessa	forma,	intercalando	entre a “ponta	esquerda” e	
+a	“ponta	direita” os	valores	serã o	postos	no	vetor.	O	algoritmo	deverá	preencher	o	vetor	de	tal	
+forma	que	ele	ficará	como:	 vetor[1,3,5,7,9,   10,8,6,4,2]
+"""
 
 #Algoritmo
 '''
-Jogo do bicho:
-O jogador deve escolher um animal de uma tabela, cada animal representa um milhar:
-    milhar = sequencia de 4 pares de algarismo ex: 43 44 45 46
-O resultado do jogo é decidido por um sorteio sequencial de cada par do milhar, ex:
-    sorteio rodada 1: 02
-    sorteio rodada 2: 43
-    ... Ate acabar o milhar
-Para o resultado final existem varias formas de decidir, neste exemplo considere apenas 
-a sequencia gerada aleatoriamente a partir do primeiro numero sorteado ex:
-    Sorteei numero 23, logo a sequencia sera: 23 24 25 26
-
-    Verifique qual animal esse milhar representa e anuncie se o usuario venceu ou nao.
+Repetir (o tamanho do vetor) = 10 vezes:
+1 - Obter valor da contagem, guardar no vetor na posição alvo
+    1.1 - A posicao alvo e definida alternando entre um contador crescente e um contador decrescente
+          O valor do contador crescente começa em 0 e o do decrescente começa no tamanho do vetor - 1
 '''
-
-#Algoritmo
-'''
-- Obter horaInicial e horaFinal
-- Começear a criar lista que inicia com horaInicial, acrescentar valores seguindo a "regra do relogio"
-ate aparecer o valor de horaFinal
-- A cada valor acrescentado somar um em quantHoras
-- Mostrar quantHorasS
-'''
-
-import random
 
 def main():
-          
+    #Criando vetor para guardar os valores
+    vetor = [0] * 4
+    #Obendo valor inicial do contador decrescente
+    cD = len(vetor) - 1
+    #Repetindo 10 vezes
+    for cC in range(len(vetor)):
+        #Obter valor a ser guardado
+        valor = cC + 1
+        #Obter a posição do vetor onde o valor será guardado nessa rodada
+        if cC % 2 == 0:
+            posicao = cC // 2
+        else:
+            posicao = cD
+            cD -= 1
+        #Guardando o valor na posicao obtida
+        vetor[posicao] = valor
+    print(vetor)
+
 if __name__ == "__main__":
     main()
