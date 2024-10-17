@@ -1,0 +1,21 @@
+
+Banco do Brasil
+BBAS3
+23/09/2024
+26.43
+
+Petrobras
+PETR4
+01/09/2024
+37.22
+
+Banco Inter
+INT2
+01/07/2024
+98.22
+
+Google
+GOG7
+03/09/2024
+14.62
+
