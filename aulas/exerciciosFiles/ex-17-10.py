@@ -118,7 +118,7 @@ def main():
 
             elif opcao == 3:
                 mostraRelatorio(estoque)
-                _ = input("Pressione qualquer tecla para voltar ao menu")
+                _ = input("\nPressione enter para voltar ao menu")
                 clearTerminal()
 
 if __name__ == "__main__":
