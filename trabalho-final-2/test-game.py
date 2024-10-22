@@ -1,23 +1,26 @@
 import pygame
 
+from pygame.locals import *
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
         #Creating player
-        self.surface = pygame.Surface((50, 50))
+        self.surface = pygame.Surface((64, 64))
         self.surface.fill((255, 0, 0))
         self.rect = self.surface.get_rect()
-        self.speed = 5
+        self.image = pygame.image.load("./templates/SpaceShips/Ship_1_big.png")
+        self.speed = 5  
 
     #Update player position
     def update(self, pressed_key):
-        if pressed_key[pygame.K_w]:
-            self.rect.move_ip(0, -1 * 5)
-        elif pressed_key[pygame.K_s]:
+        if pressed_key[K_w]:
+            self.rect.move_ip(0, -1 * self.speed)
+        if pressed_key[K_s]:
             self.rect.move_ip(0, self.speed)
-        if pressed_key[pygame.K_a]:
+        if pressed_key[K_a]:
             self.rect.move_ip(-1 * self.speed, 0)
-        elif pressed_key[pygame.K_d]:
+        if pressed_key[K_d]:
             self.rect.move_ip(self.speed, 0)
 
 def main():
@@ -25,7 +28,7 @@ def main():
     pygame.init()
 
     #Create the screen
-    resolution = (1280, 720)     
+    resolution = (1920, 1080)     
     screen = pygame.display.set_mode(resolution)
 
     #Create the clock
@@ -33,6 +36,9 @@ def main():
 
     #Creating the sprite Player
     player = Player()
+
+    #Creating Background
+    background = pygame.image.load("./templates/background0.jpg")
 
     #Creating the sprites groups
     #all_sprites = pygame.sprite.Group()
@@ -55,8 +61,10 @@ def main():
         pressed_keys = pygame.key.get_pressed()
         player.update(pressed_keys)
         
-        #Design player
-        screen.blit(player.surface, player.rect)
+        #Design background / player
+        screen.blit(background, (0,0))
+        screen.blit(player.image, player.rect)
+
 
         #Update the game projection
         pygame.display.flip()
