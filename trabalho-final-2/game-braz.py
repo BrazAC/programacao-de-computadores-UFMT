@@ -44,15 +44,15 @@ class Enemy(pygame.sprite.Sprite):
         self.surface.fill((255, 255, 0))
         #Setting the sprite rect to a random x position
         self.rect = self.surface.get_rect(center=(random.randint(0, 1920), 0))
-        self.speed = random.randint(1, 5)
+        self.speed = random.randint(1, 10)
         #Load a sprite image
         image = pygame.image.load("./templates/asteroid.png")
 
         #Generating random size enemies
         newSize = random.randint(32, 101)
         self.image = pygame.transform.scale(image, (newSize, newSize)) #Original: 50,50 fo a 32,32 surface
-        self.rect.width = newSize - 18
-        self.rect.height = newSize - 18
+        self.rect.width = newSize - 20
+        self.rect.height = newSize - 20
 
     def update(self):
         #Moves the enemy down
@@ -60,6 +60,34 @@ class Enemy(pygame.sprite.Sprite):
         #If the enemy goes away from window, kill himself
         if self.rect.y > 1080:
             self.kill()
+
+class Projectile(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Projectile, self).__init__()
+        #Creating player
+        self.surface = pygame.Surface((5, 10))
+        self.surface.fill((255, 255, 255))
+        #Setting the starter position
+        self.rect = self.surface.get_rect()
+    
+        self.speed = -25
+
+    def update(self):
+        self.rect.move_ip(0, self.speed)
+
+        if self.rect.top < 0:
+            self.kill()
+
+def screenGameOver(status, screen):
+    #If the player is dead, show the screen
+    if not status:
+        #Show game over screen
+        screenGameOver = pygame.Surface(screen.get_size())
+        screenGameOver.fill((0,0,0))
+        screen.blit(screenGameOver, (0,0))
+    else:
+        return
+
 
 def main():
     #Initialize pygame
@@ -74,6 +102,7 @@ def main():
 
     #Creating the group sprites
     enemies_sprites = pygame.sprite.Group()
+    projectiles_sprites = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
 
     #Creating the sprite Player
@@ -86,8 +115,20 @@ def main():
     
     #Creating Background
     background = pygame.image.load("./templates/background0.jpg")
-
     i = 0
+
+    #Controling the ammount of key repeats per second (KEYDOWN event)
+    pygame.key.set_repeat(350, 0)
+
+    #Creating the score
+    pygame.font.init()
+    scoreValue = 0
+    font = pygame.font.Font(None, 54)
+    score = font.render(str(scoreValue), True, (255, 255, 255))
+    
+    #Screen's sentinels variables
+    isAlive = True
+
     #GAME LOOP
     running = True
     
@@ -106,13 +147,27 @@ def main():
                 #Add the enemy to the groups
                 enemies_sprites.add(new_enemy)
                 all_sprites.add(new_enemy)
+            elif event.type == pygame.KEYDOWN:
+                #Create a shoot projectile when key is pressed
+                if event.key == pygame.K_j:
+                    projectile = Projectile()
+                    newCenterx, newCentery = player.rect.center
+                    projectile.rect.center = (newCenterx, newCentery - (player.rect.height // 2))
+                    projectiles_sprites.add(projectile)
+                elif event.key == pygame.K_r:
+                    isAlive = True
 
-        #Update player / enemy positions
+        
+        #Get the list of pressed keys
         pressed_keys = pygame.key.get_pressed()
+
+        #Update player / enemy / projectile positions
         player.update(pressed_keys)
         for enemy in enemies_sprites:
             enemy.update()
-        
+        for projectile in projectiles_sprites:
+            projectile.update()
+
         #Design animated background
         screen.blit(background, (0,i))
         screen.blit(background, (0,i - 1080))
@@ -120,14 +175,31 @@ def main():
         if i == 1080:
             i = 0
 
-        #Design background / player / enemies
+        #Design background / player / enemies / projectiles / score
         for sprite in all_sprites:
             screen.blit(sprite.image, sprite.rect)
+        for projectile in projectiles_sprites:
+            screen.blit(projectile.surface, projectile.rect)
+
+        score = font.render(str(scoreValue), True, (255, 255, 255))
+        screen.blit(score, (1920 - 75, 50))
 
         #Setting the colision detection
+        #If the player hit an enemy
         if pygame.sprite.spritecollideany(player, enemies_sprites):
-            #Kill the player
             player.kill()
+            scoreValue = 0
+            isAlive = False
+
+
+        #If a projectile hit a enemy
+        for enemy in enemies_sprites:
+            if pygame.sprite.spritecollideany(enemy, projectiles_sprites):
+                enemy.kill()
+                scoreValue += 1
+
+        #Show (or not) the game over screen
+        screenGameOver(isAlive, screen)
 
         #Update the game projection
         pygame.display.flip()
