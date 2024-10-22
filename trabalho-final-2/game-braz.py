@@ -1,6 +1,5 @@
 import pygame
 import random
-from pygame.locals import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -17,15 +16,26 @@ class Player(pygame.sprite.Sprite):
 
     #Update player position
     def update(self, pressed_key):
-        if pressed_key[K_w]:
+        if pressed_key[pygame.K_w]:
             self.rect.move_ip(0, -1 * self.speed)
-        if pressed_key[K_s]:
+        if pressed_key[pygame.K_s]:
             self.rect.move_ip(0, self.speed)
-        if pressed_key[K_a]:
+        if pressed_key[pygame.K_a]:
             self.rect.move_ip(-1 * self.speed, 0)
-        if pressed_key[K_d]:
+        if pressed_key[pygame.K_d]:
             self.rect.move_ip(self.speed, 0)
 
+        #Constraint player position inside the screen
+        gameResolution = (1920, 1080)
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > gameResolution[0]:
+            self.rect.right = 1920
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > gameResolution[1]:
+            self.rect.x = gameResolution[1]
+        
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
@@ -35,9 +45,14 @@ class Enemy(pygame.sprite.Sprite):
         #Setting the sprite rect to a random x position
         self.rect = self.surface.get_rect(center=(random.randint(0, 1920), 0))
         self.speed = random.randint(1, 5)
-        #Set a new image dimension and add the image
+        #Load a sprite image
         image = pygame.image.load("./templates/asteroid.png")
-        self.image = pygame.transform.scale(image, (50,50))
+
+        #Generating random size enemies
+        newSize = random.randint(32, 101)
+        self.image = pygame.transform.scale(image, (newSize, newSize)) #Original: 50,50 fo a 32,32 surface
+        self.rect.width = newSize - 18
+        self.rect.height = newSize - 18
 
     def update(self):
         #Moves the enemy down
