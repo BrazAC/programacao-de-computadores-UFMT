@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.move_ip(-1 * self.speed, 0)
         if pressed_key[K_d]:
             self.rect.move_ip(self.speed, 0)
-            
+
         #Constraint player position inside the screen
         gameResolution = (1920, 1080)
         if self.rect.left < 0:
@@ -44,7 +44,7 @@ class Enemy(pygame.sprite.Sprite):
         self.surface = pygame.Surface((32, 32))
         self.surface.fill((255, 255, 255))
         #Creating Enemy in random x position
-        self.rect = self.surface.get_rect(center=(random.randint(-100, 1920), 0))
+        self.rect = self.surface.get_rect(center=(random.randint(50, 1870), -100))
         #Setting enemy speed
         self.speed = random.randint (5, 12)
         self.speedx = random.randint (-2, 2)
@@ -59,7 +59,6 @@ class Enemy(pygame.sprite.Sprite):
         else:
             self.rect.width = size - 10
             self.rect.height = size - 10
-
 
     def update(self):
         #set enemy movement
@@ -121,6 +120,11 @@ def gameScreen(screen):
     #Time Counter
     counter = 0
 
+    #Difficult controler
+    controler = 0
+    controler1 = 0
+    asteroidSpawn = 500
+
     #GAME LOOP
     running = True
     while running:
@@ -129,9 +133,21 @@ def gameScreen(screen):
 
         #Updating score based on time
         counter += 1
+
+        #For each 30 seconds rises game difficult
         if counter > 60:
             counter = 0
             scoreValue += 1
+            controler1 += 1
+        if controler1 >= 15:
+            controler += 5
+            controler1 = 0
+            asteroidSpawn -= 50
+        
+            pygame.time.set_timer(Addenemy, asteroidSpawn)
+
+
+                
         #Checking events
         for event in pygame.event.get():
             #If the screen was closed
@@ -139,8 +155,11 @@ def gameScreen(screen):
                 return True
             elif event.type == Addenemy:
                 enemy = Enemy()
+                enemy.speed += controler
                 enemies_sprites.add(enemy)
                 all_sprites.add(enemy)
+                
+
             elif event.type == pygame.KEYDOWN:
                 #Create a shoot projectile when key is pressed
                 if event.key == pygame.K_j:
@@ -194,10 +213,12 @@ def gameScreen(screen):
                 #Close the game
                 return True
         #If a projectile hit a enemy
+        pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
+        """
         collideds = pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
         if collideds:
             scoreValue += 1
-
+        """
         #Update the game projection
         pygame.display.flip()
 
