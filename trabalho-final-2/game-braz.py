@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (1920 // 2, 1080 // 2)
         #Loading player sprite image
         self.image = pygame.image.load("./templates/SpaceShips/Ship_1_big.png")
-        self.speed = 5  
+        self.speed = 7  
 
     #Update player position
     def update(self, pressed_key):
@@ -51,8 +51,8 @@ class Enemy(pygame.sprite.Sprite):
         #Generating random size enemies
         newSize = random.randint(32, 101)
         self.image = pygame.transform.scale(image, (newSize, newSize)) #Original: 50,50 fo a 32,32 surface
-        self.rect.width = newSize - 20
-        self.rect.height = newSize - 20
+        self.rect.width = newSize - 15
+        self.rect.height = newSize - 15
 
     def update(self):
         #Moves the enemy down
@@ -85,13 +85,18 @@ def screenGameOver(status, screen):
         screenGameOver = pygame.Surface(screen.get_size())
         screenGameOver.fill((0,0,0))
         screen.blit(screenGameOver, (0,0))
+
     else:
         return
-
 
 def main():
     #Initialize pygame
     pygame.init()
+
+    #Initialize audio mixer
+    pygame.mixer.init()
+    shootSound = pygame.mixer.Sound("./templates/sounds/shootSound-01.mp3")
+    explosionSound01 = pygame.mixer.Sound("./templates/sounds/explosion-01.mp3")
 
     #Create the screen
     resolution = (1920, 1080)     
@@ -118,7 +123,7 @@ def main():
     i = 0
 
     #Controling the ammount of key repeats per second (KEYDOWN event)
-    pygame.key.set_repeat(350, 0)
+    #pygame.key.set_repeat(350, 0)
 
     #Creating the score
     pygame.font.init()
@@ -154,6 +159,8 @@ def main():
                     newCenterx, newCentery = player.rect.center
                     projectile.rect.center = (newCenterx, newCentery - (player.rect.height // 2))
                     projectiles_sprites.add(projectile)
+                    #Play the sound
+                    shootSound.play()
                 elif event.key == pygame.K_r:
                     isAlive = True
 
@@ -181,8 +188,8 @@ def main():
         for projectile in projectiles_sprites:
             screen.blit(projectile.surface, projectile.rect)
 
-        score = font.render(str(scoreValue), True, (255, 255, 255))
-        screen.blit(score, (1920 - 75, 50))
+        score = font.render(f"SCORE {scoreValue}", True, (255, 255, 255))
+        screen.blit(score, (1920 - 225, 50))
 
         #Setting the colision detection
         #If the player hit an enemy
@@ -190,20 +197,20 @@ def main():
             player.kill()
             scoreValue = 0
             isAlive = False
-
+            #Play a sound
+            #explosionSound01.set_volume(0.5)
+            #explosionSound01.play()
 
         #If a projectile hit a enemy
-        for enemy in enemies_sprites:
-            if pygame.sprite.spritecollideany(enemy, projectiles_sprites):
-                enemy.kill()
-                scoreValue += 1
+        collideds = pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
+        if collideds:
+            scoreValue += 1
 
         #Show (or not) the game over screen
         screenGameOver(isAlive, screen)
 
         #Update the game projection
         pygame.display.flip()
-
 
 if __name__ == "__main__":
     main()
