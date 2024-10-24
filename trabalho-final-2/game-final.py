@@ -113,7 +113,7 @@ def gameScreen(screen):
     projectiles_sprites = pygame.sprite.Group()
 
     #Creating event to enemy creation
-    Addenemy = pygame.USEREVENT + 1
+    Addenemy = pygame.USEREVENT + 3
     pygame.time.set_timer(Addenemy, 500)
 
     #Creating Score
@@ -257,13 +257,13 @@ def gameOverScreen(screen, scoreValue, scoreAsteroidValue):
 
         #Designing score
         score = font.render(f"TIME SURVIVED: {scoreValue}", True, (255, 255, 255))
-        screen.blit(score, ((1920 // 2) - 170, (1080 // 2) - 35))
+        screen.blit(score, ((1920 // 2) - 200, (1080 // 2) + 75))
 
         scoreAsteroid = font1.render(f"FINAL SCORE: {scoreAsteroidValue}", True, (255, 255, 255))
-        screen.blit(scoreAsteroid, ((1920 // 2) - 150, (1080 // 2) - 95))
+        screen.blit(scoreAsteroid, ((1920 // 2) - 180, (1080 // 2) + 115))
 
-        gameOverMessage = font2.render(f"YOU DIED", True, (255, 0, 0))
-        screen.blit(gameOverMessage, ((1920 // 2) - 180, (1080 // 2) - 195))
+        gameOverMessage = font2.render(f"GAME OVER", True, (255, 0, 0))
+        screen.blit(gameOverMessage, ((1920 // 2) - 275, (1080 // 2) - 95))
 
         pygame.display.flip()
         
@@ -310,15 +310,30 @@ def menuScreen():
     
     #Setup blink subtitle
     BLINK_EVENT = pygame.USEREVENT + 1
-    pygame.time.set_timer(BLINK_EVENT, 500 )
+    pygame.time.set_timer(BLINK_EVENT, 500)
     font1 = pygame.font.Font(None, 44)
-    subTitle = font1.render("Press ENTER to start", True, (255, 255, 255))
+    subTitle = font1.render("Press ENTER to start", True, (255, 232, 31))
     showText = True
+
+    #Setup game instructions
+    font3 = pygame.font.Font(None, 24)
+    wasdInstructionsText = font3.render("W A S D to move", True, (255, 255, 255))
+
+    font4 = pygame.font.Font(None, 24)
+    shootInstructionsText = font4.render("J to shoot", True, (255, 255, 255))
 
     #Setup background
     background = pygame.Surface((1920, 1080))
     background = pygame.image.load("./templates/background0.jpg")    
     
+    #SETUP ANIMATED ENEMIES BACKGROUND
+    #Creating the sprites groups
+    enemiesMenu_sprites = pygame.sprite.Group()
+    #Creating event to enemy creation
+    ADDENEMYMENU = pygame.USEREVENT + 2
+    pygame.time.set_timer(ADDENEMYMENU, 1500)
+
+
     running = True
     while running:
         #Checking events
@@ -346,15 +361,43 @@ def menuScreen():
             elif event.type == BLINK_EVENT:
                 #Alternating showText status
                 showText = not showText
+            elif event.type == ADDENEMYMENU:
+                #Add a enemy to the menu background
+                enemy = Enemy()
+                enemy.speed = 1
+                enemiesMenu_sprites.add(enemy)
+
+        #Logic to update menu enemies position
+        for enemy in enemiesMenu_sprites:
+            enemy.update()
+        
 
         #Logic to blink the subtitle
         if showText:#If true, show background/title and subTitle
+            #Background
             screen.blit(background, (0, 0))
+            #Decoration enemies
+            for enemy in enemiesMenu_sprites:
+                screen.blit(enemy.image, enemy.rect)
+            #Title
             screen.blit(title, ((1920 // 2) - 225, (1080 // 2) - 100))
+            #Instructions
+            screen.blit(wasdInstructionsText, ((1920 // 2) - 60, (1080 // 2) + 350))
+            screen.blit(shootInstructionsText, ((1920 // 2) - 35, (1080 // 2) + 400))
+
             screen.blit(subTitle, ((1920 // 2) - 152, (1080 // 2) - 0))
         else:       #If false, show only the background/title
+            #Background
             screen.blit(background, (0, 0))
+            #Decoration enemies
+            for enemy in enemiesMenu_sprites:
+                screen.blit(enemy.image, enemy.rect)
+            #Title
             screen.blit(title, ((1920 // 2) - 225, (1080 // 2) - 100))
+            #Instructions
+            screen.blit(wasdInstructionsText, ((1920 // 2) - 60, (1080 // 2) + 350))
+            screen.blit(shootInstructionsText, ((1920 // 2) - 35, (1080 // 2) + 400))
+            
 
         #Designing menu title
         pygame.display.flip()
