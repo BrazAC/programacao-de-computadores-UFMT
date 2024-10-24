@@ -131,8 +131,9 @@ def gameScreen(screen):
 
     #Difficult controler
     controler = 0
-    controler1 = 0
+    secondsCounter = 0
     asteroidSpawn = 500
+    backgroundSpeed = 3
 
     #GAME LOOP
     running = True
@@ -143,16 +144,17 @@ def gameScreen(screen):
         #Updating score based on time
         counter += 1
 
-        #For each 30 seconds rises game difficult
-        if counter > 60:
+        #Seconds counter - game is running at 60fps (or 60 while loops per second)
+        if counter > 60: 
             counter = 0
             scoreValue += 1
-            controler1 += 1
-        if controler1 >= 15:
+            secondsCounter += 1
+        #For each 15 seconds rises game difficult
+        if secondsCounter >= 15:
             controler += 5
-            controler1 = 0
+            secondsCounter = 0
             asteroidSpawn -= 50
-        
+            backgroundSpeed += 3
             pygame.time.set_timer(Addenemy, asteroidSpawn)
 
         #Checking events
@@ -189,8 +191,8 @@ def gameScreen(screen):
         #Design animated background
         screen.blit(background, (0,i))
         screen.blit(background, (0,i - 1080))
-        i += 3
-        if i == 1080:
+        i += backgroundSpeed
+        if i >= 1080:
             i = 0
         #Design player / enemies
         for sprite in all_sprites:
@@ -237,6 +239,9 @@ def gameOverScreen(screen, scoreValue, scoreAsteroidValue):
     font1 = pygame.font.Font(None, 64)
     scoreAsteroid = font1.render(str(scoreAsteroidValue), True, (255, 255, 255))
 
+    font2 = pygame.font.Font(None, 124)
+    gameOverMessage = font2.render("YOU DIED", True, (255, 0, 0))
+
     #Load the game over music
     pygame.mixer.music.load("./templates/sounds/ninjagaiden-gameover.mp3")
     pygame.mixer.music.set_volume(0.7)
@@ -256,6 +261,9 @@ def gameOverScreen(screen, scoreValue, scoreAsteroidValue):
 
         scoreAsteroid = font1.render(f"FINAL SCORE: {scoreAsteroidValue}", True, (255, 255, 255))
         screen.blit(scoreAsteroid, ((1920 // 2) - 150, (1080 // 2) - 95))
+
+        gameOverMessage = font2.render(f"YOU DIED", True, (255, 0, 0))
+        screen.blit(gameOverMessage, ((1920 // 2) - 180, (1080 // 2) - 195))
 
         pygame.display.flip()
         
