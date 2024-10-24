@@ -272,7 +272,8 @@ def menuScreen():
 
     #Create the screen
     resolution = (1920, 1080)     
-    screen = pygame.display.set_mode(resolution)
+    #screen = pygame.display.set_mode(resolution)
+    screen = pygame.display.set_mode(resolution, pygame.FULLSCREEN)
 
     #Loading sounds
     pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
