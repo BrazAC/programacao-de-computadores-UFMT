@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.rect.top = 0
         if self.rect.bottom > gameResolution[1]:
-            self.rect.x = gameResolution[1]
+            self.rect.bottom = gameResolution[1]
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -167,11 +167,11 @@ def gameScreen(screen):
                 all_sprites.add(enemy)   
 
             elif event.type == pygame.KEYDOWN:
-                #Create a shoot projectile when key is pressed
+                #Create a shoot projectile when j key is pressed
                 if event.key == pygame.K_j:
                     projectile = Projectile()
                     newCenterx, newCentery = player.rect.center
-                    projectile.rect.center = (newCenterx, newCentery - (player.rect.height // 2))
+                    projectile.rect.center = (newCenterx + 8, newCentery )#- (player.rect.height  // 2))
                     projectiles_sprites.add(projectile)
                     #Play the sound
                     shootSound.play()
