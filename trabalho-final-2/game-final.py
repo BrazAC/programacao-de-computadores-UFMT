@@ -232,6 +232,12 @@ def gameOverScreen(screen, scoreValue):
     font = pygame.font.Font(None, 64)
     score = font.render(str(scoreValue), True, (255, 255, 255))
 
+    #Load the game over music
+    pygame.mixer.music.load("./templates/sounds/ninjagaiden-gameover.mp3")
+    pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+    #Play the sound (-1 = loop)
+    pygame.mixer.music.play(0, start=1)
+
     running = True
     while running:
         background = pygame.image.load("./templates/background0.jpg")
@@ -252,6 +258,9 @@ def gameOverScreen(screen, scoreValue):
             elif event.type == pygame.KEYDOWN:
                 #If i was pressed, return to menu
                 if event.key == pygame.K_RETURN:
+                    #Stop playing the music
+                    pygame.mixer.music.stop()
+                    #Return to menu
                     return True
                      
 def menuScreen():
@@ -309,6 +318,7 @@ def menuScreen():
                     if xPressed:    #If the game was closed inside gameScreen, close the menu
                         running = False
                     else:           #In any other case, begins playing the menu music again
+                        #Load the correct music
                         pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
                         pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
                         #Play the sound (-1 = loop)
