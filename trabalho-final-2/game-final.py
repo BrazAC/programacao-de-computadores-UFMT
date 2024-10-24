@@ -94,7 +94,7 @@ def gameScreen(screen):
     shootSound = pygame.mixer.Sound("./templates/sounds/shootSound-01.mp3")
 
     pygame.mixer.music.load("./templates/sounds/megaman-2-gamemusic.mp3")
-    pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+    pygame.mixer.music.set_volume(0.7)
 
     #Play the sound (-1 = loop)
     pygame.mixer.music.play(-1)
@@ -121,6 +121,10 @@ def gameScreen(screen):
     scoreValue = 0
     font = pygame.font.Font(None, 64)
     score = font.render(str(scoreValue), True, (255, 255, 255))
+    
+    scoreValueAsteroid = 0
+    font1 = pygame.font.Font(None, 64)
+    scoreAsteroid = font1.render(str(scoreValueAsteroid), True, (255, 255, 255))
 
     #Time Counter
     counter = 0
@@ -151,8 +155,6 @@ def gameScreen(screen):
         
             pygame.time.set_timer(Addenemy, asteroidSpawn)
 
-
-                
         #Checking events
         for event in pygame.event.get():
             #If the screen was closed
@@ -162,8 +164,7 @@ def gameScreen(screen):
                 enemy = Enemy()
                 enemy.speed += controler
                 enemies_sprites.add(enemy)
-                all_sprites.add(enemy)
-                
+                all_sprites.add(enemy)   
 
             elif event.type == pygame.KEYDOWN:
                 #Create a shoot projectile when key is pressed
@@ -185,14 +186,13 @@ def gameScreen(screen):
         for projectile in projectiles_sprites:
             projectile.update()
 
-        #Design background / sprites
         #Design animated background
         screen.blit(background, (0,i))
         screen.blit(background, (0,i - 1080))
         i += 3
         if i == 1080:
             i = 0
-
+        #Design player / enemies
         for sprite in all_sprites:
             screen.blit(sprite.image, sprite.rect)
         #Design projectiles
@@ -200,15 +200,18 @@ def gameScreen(screen):
             screen.blit(projectile.surface, projectile.rect)
 
         #Designing score
-        score = font.render(f"PONTUAÇÃO: {scoreValue}", True, (255, 255, 255))
-        screen.blit(score, (1920 - 450, 50))
+        score = font.render(f"TIME: {scoreValue}", True, (255, 255, 255))
+        screen.blit(score, (1920 - 250, 50))
+
+        scoreAsteroid = font1.render(f"SCORE: {scoreValueAsteroid}", True, (255, 255, 255))
+        screen.blit(scoreAsteroid, (0 + 100, 50))
         
         #If enemy hits player
         if pygame.sprite.spritecollideany(player, enemies_sprites):
             player.kill()
             #Stop playing the music
             pygame.mixer.music.stop()
-            running = gameOverScreen(screen, scoreValue)
+            running = gameOverScreen(screen, scoreValue, scoreValueAsteroid)
             scoreValue = 0
             #Analysing the gameOverScreen return to decide an action
             if running:
@@ -217,24 +220,28 @@ def gameScreen(screen):
             else:
                 #Close the game
                 return True
+            
         #If a projectile hit a enemy
-        pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
-        """
+        #pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
+        
         collideds = pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
         if collideds:
-            scoreValue += 1
-        """
+            scoreValueAsteroid += 1
+        
         #Update the game projection
         pygame.display.flip()
 
-def gameOverScreen(screen, scoreValue):
+def gameOverScreen(screen, scoreValue, scoreAsteroidValue):
     #Creating Score
     font = pygame.font.Font(None, 64)
     score = font.render(str(scoreValue), True, (255, 255, 255))
 
+    font1 = pygame.font.Font(None, 64)
+    scoreAsteroid = font1.render(str(scoreAsteroidValue), True, (255, 255, 255))
+
     #Load the game over music
     pygame.mixer.music.load("./templates/sounds/ninjagaiden-gameover.mp3")
-    pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+    pygame.mixer.music.set_volume(0.7)
     #Play the sound (-1 = loop)
     pygame.mixer.music.play(0, start=1)
 
@@ -246,8 +253,12 @@ def gameOverScreen(screen, scoreValue):
         screen.blit(background, (0, 0))
 
         #Designing score
-        score = font.render(f"FINAL SCORE: {scoreValue}", True, (255, 255, 255))
-        screen.blit(score, ((1920 // 2) - 250, (1080 // 2) - 100))
+        score = font.render(f"TIME SURVIVED: {scoreValue}", True, (255, 255, 255))
+        screen.blit(score, ((1920 // 2) - 170, (1080 // 2) - 35))
+
+        scoreAsteroid = font1.render(f"FINAL SCORE: {scoreAsteroidValue}", True, (255, 255, 255))
+        screen.blit(scoreAsteroid, ((1920 // 2) - 150, (1080 // 2) - 95))
+
         pygame.display.flip()
         
         #Checking events
@@ -277,7 +288,7 @@ def menuScreen():
 
     #Loading sounds
     pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
-    pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+    pygame.mixer.music.set_volume(0.7)
     #Loading action sound
     actionSound = pygame.mixer.Sound("./templates/sounds/undertale-sound-savepoint.mp3")
 
@@ -321,7 +332,7 @@ def menuScreen():
                     else:           #In any other case, begins playing the menu music again
                         #Load the correct music
                         pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
-                        pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+                        pygame.mixer.music.set_volume(0.7)
                         #Play the sound (-1 = loop)
                         pygame.mixer.music.play(-1)
 
