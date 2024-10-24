@@ -77,7 +77,7 @@ class Projectile(pygame.sprite.Sprite):
         self.surface.fill((255, 255, 255))
         #Setting the starter position
         self.rect = self.surface.get_rect()
-    
+
         self.speed = -25
 
     def update(self):
@@ -171,7 +171,7 @@ def gameScreen(screen):
                 if event.key == pygame.K_j:
                     projectile = Projectile()
                     newCenterx, newCentery = player.rect.center
-                    projectile.rect.center = (newCenterx + 8, newCentery )#- (player.rect.height  // 2))
+                    projectile.rect.center = (newCenterx + 8, newCentery )
                     projectiles_sprites.add(projectile)
                     #Play the sound
                     shootSound.play()
@@ -199,7 +199,7 @@ def gameScreen(screen):
         for projectile in projectiles_sprites:
             screen.blit(projectile.surface, projectile.rect)
 
-        #Designing score
+        #Desing score
         score = font.render(f"TIME: {scoreValue}", True, (255, 255, 255))
         screen.blit(score, (1920 - 250, 50))
 
@@ -222,8 +222,6 @@ def gameScreen(screen):
                 return True
             
         #If a projectile hit a enemy
-        #pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
-        
         collideds = pygame.sprite.groupcollide(enemies_sprites, projectiles_sprites, True, True)
         if collideds:
             scoreValueAsteroid += 1
@@ -283,8 +281,11 @@ def menuScreen():
 
     #Create the screen
     resolution = (1920, 1080)     
-    #screen = pygame.display.set_mode(resolution)
     screen = pygame.display.set_mode(resolution, pygame.FULLSCREEN)
+    #Setting display name / icon
+    pygame.display.set_caption("A New Hope")
+    displayIcon = pygame.image.load("./templates/SpaceShips/Ship_3.png")
+    pygame.display.set_icon(displayIcon)
 
     #Loading sounds
     pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
@@ -326,7 +327,6 @@ def menuScreen():
                     pygame.mixer.music.stop()
                     #Begins the game
                     xPressed = gameScreen(screen)
-    
                     if xPressed:    #If the game was closed inside gameScreen, close the menu
                         running = False
                     else:           #In any other case, begins playing the menu music again
@@ -335,7 +335,6 @@ def menuScreen():
                         pygame.mixer.music.set_volume(0.7)
                         #Play the sound (-1 = loop)
                         pygame.mixer.music.play(-1)
-
             elif event.type == BLINK_EVENT:
                 #Alternating showText status
                 showText = not showText
