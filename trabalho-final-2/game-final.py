@@ -90,9 +90,14 @@ def gameScreen(screen):
     #Create the clock
     clock = pygame.time.Clock()
 
-    #Initialize audio mixer
-    pygame.mixer.init()
+    #Loading sounds
     shootSound = pygame.mixer.Sound("./templates/sounds/shootSound-01.mp3")
+
+    pygame.mixer.music.load("./templates/sounds/megaman-2-gamemusic.mp3")
+    pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+
+    #Play the sound (-1 = loop)
+    pygame.mixer.music.play(-1)
 
     #Creating the sprite Player
     player = Player()
@@ -194,8 +199,6 @@ def gameScreen(screen):
         for projectile in projectiles_sprites:
             screen.blit(projectile.surface, projectile.rect)
 
-        
-
         #Designing score
         score = font.render(f"PONTUAÇÃO: {scoreValue}", True, (255, 255, 255))
         screen.blit(score, (1920 - 450, 50))
@@ -203,6 +206,8 @@ def gameScreen(screen):
         #If enemy hits player
         if pygame.sprite.spritecollideany(player, enemies_sprites):
             player.kill()
+            #Stop playing the music
+            pygame.mixer.music.stop()
             running = gameOverScreen(screen, scoreValue)
             scoreValue = 0
             #Analysing the gameOverScreen return to decide an action
@@ -253,9 +258,21 @@ def menuScreen():
     #Initialize pygame
     pygame.init()
 
+    #Initialize audio mixer
+    pygame.mixer.init()
+
     #Create the screen
     resolution = (1920, 1080)     
     screen = pygame.display.set_mode(resolution)
+
+    #Loading sounds
+    pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
+    pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+    #Loading action sound
+    actionSound = pygame.mixer.Sound("./templates/sounds/undertale-sound-savepoint.mp3")
+
+    #Play the sound (-1 = loop)
+    pygame.mixer.music.play(-1)
 
     #Setup title
     font = pygame.font.Font(None, 104)
@@ -263,7 +280,7 @@ def menuScreen():
     
     #Setup blink subtitle
     BLINK_EVENT = pygame.USEREVENT + 1
-    pygame.time.set_timer(BLINK_EVENT, 1000 )
+    pygame.time.set_timer(BLINK_EVENT, 500 )
     font1 = pygame.font.Font(None, 44)
     subTitle = font1.render("Press ENTER to start", True, (255, 255, 255))
     showText = True
@@ -280,12 +297,23 @@ def menuScreen():
             if event.type == pygame.QUIT: 
                 running = False
             elif event.type == pygame.KEYDOWN:
-                #If i was pressed, begin the game
+                #I enter was pressed, begin the game
                 if event.key == pygame.K_RETURN:
+                    #Play a little sound effect
+                    actionSound.play()
+                    #Stop playing the music
+                    pygame.mixer.music.stop()
+                    #Begins the game
                     xPressed = gameScreen(screen)
-                    #If the game was closed inside gameScreen, close the menu
-                    if xPressed:
-                        running = False        
+    
+                    if xPressed:    #If the game was closed inside gameScreen, close the menu
+                        running = False
+                    else:           #In any other case, begins playing the menu music again
+                        pygame.mixer.music.load("./templates/sounds/megaman-2-theme.mp3")
+                        pygame.mixer.music.set_volume(0.7)  # Volume entre 0.0 e 1.0
+                        #Play the sound (-1 = loop)
+                        pygame.mixer.music.play(-1)
+
             elif event.type == BLINK_EVENT:
                 #Alternating showText status
                 showText = not showText
