@@ -235,7 +235,7 @@ def gameOverScreen(screen, scoreValue):
         screen.blit(background, (0, 0))
 
         #Designing score
-        score = font.render(f"PONTUAÇÃO FINAL: {scoreValue}", True, (255, 255, 255))
+        score = font.render(f"FINAL SCORE: {scoreValue}", True, (255, 255, 255))
         screen.blit(score, ((1920 // 2) - 250, (1080 // 2) - 100))
         pygame.display.flip()
         
@@ -257,25 +257,23 @@ def menuScreen():
     resolution = (1920, 1080)     
     screen = pygame.display.set_mode(resolution)
 
-    #Creating Score
+    #Setup title
     font = pygame.font.Font(None, 104)
-    font1 = pygame.font.Font(None, 44)
     title = font.render("A NEW HOPE", True, (255, 255, 255))
+    
+    #Setup blink subtitle
+    BLINK_EVENT = pygame.USEREVENT + 1
+    pygame.time.set_timer(BLINK_EVENT, 1000 )
+    font1 = pygame.font.Font(None, 44)
     subTitle = font1.render("Press ENTER to start", True, (255, 255, 255))
+    showText = True
 
+    #Setup background
     background = pygame.Surface((1920, 1080))
     background = pygame.image.load("./templates/background0.jpg")    
     
-
     running = True
     while running:
-        #Designing score
-        screen.blit(background, (0, 0))
-        screen.blit(title, ((1920 // 2) - 225, (1080 // 2) - 100))
-        screen.blit(subTitle, ((1920 // 2) - 152, (1080 // 2) - 0))
-        
-        pygame.display.flip()
-
         #Checking events
         for event in pygame.event.get():
             #If the screen was closed
@@ -288,6 +286,21 @@ def menuScreen():
                     #If the game was closed inside gameScreen, close the menu
                     if xPressed:
                         running = False        
+            elif event.type == BLINK_EVENT:
+                #Alternating showText status
+                showText = not showText
+
+        #Logic to blink the subtitle
+        if showText:#If true, show background/title and subTitle
+            screen.blit(background, (0, 0))
+            screen.blit(title, ((1920 // 2) - 225, (1080 // 2) - 100))
+            screen.blit(subTitle, ((1920 // 2) - 152, (1080 // 2) - 0))
+        else:       #If false, show only the background/title
+            screen.blit(background, (0, 0))
+            screen.blit(title, ((1920 // 2) - 225, (1080 // 2) - 100))
+
+        #Designing menu title
+        pygame.display.flip()
 
 def main():
     menuScreen()
