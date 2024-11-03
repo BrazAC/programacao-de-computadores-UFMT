@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
 
     #Update player position
     def update(self, pressed_key):
-        if pressed_key[pygame.K_w]:
+        if pressed_key[K_w]:
             self.rect.move_ip(0, -1 * self.speed)
         if pressed_key[K_s]:
             self.rect.move_ip(0, self.speed)
@@ -405,6 +405,7 @@ def menuScreen():
             screen.blit(wasdInstructionsText, ((1920 // 2) - 60, (1080 // 2) + 350))
             screen.blit(shootInstructionsText, ((1920 // 2) - 35, (1080 // 2) + 400))
             
+
         #Designing menu title
         pygame.display.flip()
 
