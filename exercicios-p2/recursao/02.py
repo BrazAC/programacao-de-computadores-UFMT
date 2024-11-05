@@ -1,13 +1,13 @@
-def deconta(n):
+def conta(n):
     if n == 1:
         print(n)
     else:
+        conta(n - 1)
         print(n)
-        deconta(n - 1)
 
 def main():
     n = int(input("Valor: "))
-    deconta(n)
+    conta(n)
 
 if __name__ == "__main__":
     main()

@@ -1,13 +1,11 @@
-def deconta(n):
+def fat(n):
     if n == 1:
-        print(n)
+        return n
     else:
-        print(n)
-        deconta(n - 1)
-
+        return fat(n - 1) * n
 def main():
     n = int(input("Valor: "))
-    deconta(n)
+    print(fat(n))
 
 if __name__ == "__main__":
     main()
